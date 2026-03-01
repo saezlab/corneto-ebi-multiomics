@@ -203,6 +203,7 @@ The input data comes from the supplementary tables of [Tüchler *et al.*
 
 - **Enzyme activities** (`enzyme_activities.tsv`): Transcription factor and
   kinase activity scores inferred by Decoupler from transcriptomics
+
   (for TFs, using CollecTRI) and phosphoproteomics (for kinases, using
   a kinase-substrate network). 128 significant activities.
 
@@ -212,23 +213,45 @@ The input data comes from the supplementary tables of [Tüchler *et al.*
 
 ## Key concepts
 
+- **Activity inference:** when the state captured in omics data is in part a
+  mechanistic consequence of certain molecular activities and robust
+  relationships between activities and omics measurements exist in
+  prior-knowledge (these are called signatures or footprints), it is possible
+  to estimate the activities from the omics data by simple statistics similar
+  to enrichment analysis (Badia-i-Mompel *et al.*, 2022). The simplest concrete
+  example is transcription factor (TF) activity inference: if we know the
+  target genes of a TF from prior-knowledge (this is the footprint of the TF,
+  aka its regulon), and the majority of those target genes show a positive fold
+  change in transcriptomics data, we can infer that the TF gets activated in
+  the given condition. Read more in the [Decoupler
+  manual](https://decoupler.readthedocs.io).
+
 - **Prior knowledge network (PKN):** A signed, directed graph of known
   protein-protein regulatory interactions from OmniPath (Türei *et al.*,
   2026). Edges indicate
   activation (+1) or inhibition (-1), making it a causal network suitable for
   mechanistic modeling.
 
+- **Network optimisation:** a procedure which, given a set of constraints
+  (patterns of molecular activities, perturbations) and a causal
+  prior-knowledge network, searches for subnetworks which achieve the least
+  amount of logical contradiction between the constaints and the network by
+  using the lowest number of nodes and edges from the PKN
+
 - **CORNETO:** "Core network optimiser" (Rodriguez-Mier *et al.*, 2025) - a
-    Python framework that is able to deliver diverse network optimisation
-    problems by diverse formulations to a number of optimisation solvers
-    (backends).
+  Python framework that is able to deliver diverse network optimisation
+  problems by diverse formulations to a number of optimisation solvers
+  (backends). Read more in the [CORNETO documentation
+  ](https://corneto.org/stable/guide/index.html).
 
 - **CARNIVAL:** An optimisation method (Liu *et al.*, 2019) that finds a
-  subnetwork of the PKN
-  consistent with observed perturbations (inputs) and measurements (outputs),
-  while penalizing network complexity (L0 regularization on edges). It is one
-  of the many optimisation methods CORNETO supports.
+  subnetwork of the PKN consistent with observed perturbations (inputs) and
+  measurements (outputs), while penalizing network complexity (L0
+  regularization on edges). This method is called causal reasoning, and it is
+  one of the many optimisation methods CORNETO supports. Read more in the
+  [CARNIVAL paper](https://doi.org/10.1038/s41540-019-0118-z).
 
 - **CarnivalFlow:** The current CORNETO implementation of CARNIVAL, using
-  a flow-based formulation that supports multi-sample analysis with
-  structured sparsity regularization.
+  a flow-based formulation that supports multi-sample analysis with structured
+  sparsity regularization. [Read more
+  here](https://corneto.org/stable/guide/signaling/carnival.html#carnivalflow).
