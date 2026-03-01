@@ -1,0 +1,445 @@
+network	node	value	score	type
+early	YAP1	1		PKN
+early	STAT4	-1	-3.37209149776187	TF
+early	EPAS1	1	5.64887119372322	TF
+early	ETS2	-1	-3.4649431056547	TF
+early	HDAC1	1		PKN
+early	PRKD1	1	3.72350430483816	Kinase/ phosphatase
+early	MAPK1	1		PKN
+early	KLF9	1	3.50483542573002	TF
+early	PRKG1	1	3.99343071044892	Kinase/ phosphatase
+early	PLK3	-1	-3.69939448143898	Kinase/ phosphatase
+early	CHEK1	-1	-3.57260711857967	Kinase/ phosphatase
+early	EGR1	1	5.41442434128952	TF
+early	CDKN1A	1		PKN
+early	CSNK2A1	1	4.24406978488127	Kinase/ phosphatase
+early	MAP2K1	1	4.19765535020717	Kinase/ phosphatase
+early	TGFB1	1		PKN
+early	UHMK1	-1	-3.09824869780951	Kinase/ phosphatase
+early	TFAP2A	-1	-3.43412457983933	TF
+early	PAX6	1	3.47165546220964	TF
+early	AR	1		PKN
+early	HIC1	-1	-3.05001095784449	TF
+early	IGF1R	-1		PKN
+early	ABL1	1		PKN
+early	AURKB	-1	-3.2421037974326	Kinase/ phosphatase
+early	RHOA	-1		PKN
+early	SMAD5	1	12.7526882166277	TF
+early	NR2F2	-1	-3.26241972367502	TF
+early	JUN	-1		PKN
+early	ATF3	-1	-3.84561212599744	TF
+early	FOSL2	1	3.93584666283195	TF
+early	RPS6KA3	1	3.03402906002979	Kinase/ phosphatase
+early	MNT	1	3.4450377915094	TF
+early	ATF6	1	3.78550060545461	TF
+early	BHLHE40	1	6.6538275522898	TF
+early	RPS6KA1	1	4.34059721497522	Kinase/ phosphatase
+early	PIK3CA	-1		PKN
+early	APEX1	1		PKN
+early	STAT2	1	5.04034496900821	TF
+early	GLI1	-1	-3.38427284253802	TF
+early	RAF1	-1	-3.09387270950905	Kinase/ phosphatase
+early	KMT2A	1	9.37277078198052	TF
+early	FOXM1	-1		PKN
+early	E2F3	-1		PKN
+early	MAPKAPK2	1	8.1981840128596	Kinase/ phosphatase
+early	HIF1A	-1	-3.08195616325697	TF
+early	SIRT1	-1		PKN
+early	STAT5A	1		PKN
+early	RPS6KB1	1	5.12159555811472	Kinase/ phosphatase
+early	TEAD4	1	3.67604211392994	TF
+early	SMAD1	1	4.45159005032565	TF
+early	AKT1	1	4.88777736993531	Kinase/ phosphatase
+early	KLF4	-1	-3.01657882112287	TF
+early	NR3C1	1		PKN
+early	PPP2CB	-1	-3.52917605403805	Kinase/ phosphatase
+early	E2F1	1	3.13549508499233	TF
+early	SMAD4	1	8.55294127708778	TF
+early	JAK1	-1		PKN
+early	FOXO4	-1	-3.95734228555743	TF
+early	FOXL2	1	4.03305933481831	TF
+early	TP53	-1	-3.42603033011242	TF
+early	RARA	1	4.38823423857732	TF
+early	ROCK1	-1	-3.3228346550483	Kinase/ phosphatase
+early	CDK3	-1	-3.06511335490922	Kinase/ phosphatase
+early	NR4A1	1	3.53335737646248	TF
+early	PRKCZ	-1	-3.09589143804074	Kinase/ phosphatase
+early	UBE2I	1		PKN
+early	AKT3	1	3.36876611315632	Kinase/ phosphatase
+early	SET	1		PKN
+early	RELA	1		PKN
+early	ROCK2	-1	-9.48749990087582	Kinase/ phosphatase
+early	FLI1	1	3.03731448711324	TF
+early	CDK1	-1		PKN
+early	ZBTB7A	-1	-3.44034465740237	TF
+early	SRF	1	8.9444071968422	TF
+early	FOXK2	-1	-3.36692548452396	TF
+early	SMARCA4	-1		PKN
+early	_s	1		PKN
+early	_pert_C1	1		PKN
+early	_meas_C1	1		PKN
+early	_t	1		PKN
+early	STAT4	-1	-3.37209149776187	TF
+early	HSPG2	1	1.11517316569613	Secreted proteins
+early	EPAS1	1	5.64887119372322	TF
+early	JUP	1	2.63190922187009	Secreted proteins
+early	ECM1	1	0.646974913869474	Secreted proteins
+early	ETS2	-1	-3.4649431056547	TF
+early	CSPG4	1	0.628307543656847	Secreted proteins
+early	IGFBP7	1	1.38007126642596	Secreted proteins
+early	ADAM12	1	1.9033332226238	Secreted proteins
+early	PRKD1	1	3.72350430483816	Kinase/ phosphatase
+early	KLF9	1	3.50483542573002	TF
+early	PRKG1	1	3.99343071044892	Kinase/ phosphatase
+early	CREB1	1		PKN
+early	BCL6	-1		PKN
+early	PLK3	-1	-3.69939448143898	Kinase/ phosphatase
+early	CHEK1	-1	-3.57260711857967	Kinase/ phosphatase
+early	GREM2	-1		PKN
+early	EGR1	1	5.41442434128952	TF
+early	STAT1	1		PKN
+early	CDKN1A	1		PKN
+early	CSNK2A1	1	4.24406978488127	Kinase/ phosphatase
+early	GDF6	1	1.40494396752215	Secreted proteins
+early	MAP2K1	1	4.19765535020717	Kinase/ phosphatase
+early	TGFB1	1		PKN
+early	FN1	1	1.98553197709245	Secreted proteins
+early	E2F5	1		PKN
+early	UHMK1	-1	-3.09824869780951	Kinase/ phosphatase
+early	TFAP2A	-1	-3.43412457983933	TF
+early	ADGRG1	1	2.04269733733089	Secreted proteins
+early	PAX6	1	3.47165546220964	TF
+early	HIC1	-1	-3.05001095784449	TF
+early	NOTCH1	1		PKN
+early	COL5A1	1	1.70831824855303	Secreted proteins
+early	CTSV	1	0.607363048570093	Secreted proteins
+early	TAGLN	1	1.65671743063888	Secreted proteins
+early	AURKB	-1	-3.2421037974326	Kinase/ phosphatase
+early	HTRA1	1	0.643212739077491	Secreted proteins
+early	IGFBP3	1	2.48381105702776	Secreted proteins
+early	SMAD5	1	12.7526882166277	TF
+early	AMIGO2	1	2.37956130537014	Secreted proteins
+early	NR2F2	-1	-3.26241972367502	TF
+early	ATF3	-1	-3.84561212599744	TF
+early	FOSL2	1	3.93584666283195	TF
+early	RPS6KA3	1	3.03402906002979	Kinase/ phosphatase
+early	MNT	1	3.4450377915094	TF
+early	ATF6	1	3.78550060545461	TF
+early	NFATC4	1		PKN
+early	SFRP2	1	2.16464833942458	Secreted proteins
+early	BHLHE40	1	6.6538275522898	TF
+early	RPS6KA1	1	4.34059721497522	Kinase/ phosphatase
+early	SPARC	1	1.20928500744585	Secreted proteins
+early	MMP2	1	1.70579455752466	Secreted proteins
+early	VIM	1	0.614102941092797	Secreted proteins
+early	LTBP4	1	0.596148433221458	Secreted proteins
+early	STAT2	1	5.04034496900821	TF
+early	GLI1	-1	-3.38427284253802	TF
+early	RAF1	-1	-3.09387270950905	Kinase/ phosphatase
+early	SIN3A	-1		PKN
+early	ADAM19	1	0.653100348466431	Secreted proteins
+early	KMT2A	1	9.37277078198052	TF
+early	MYC	1		PKN
+early	POSTN	1	1.01144906829188	Secreted proteins
+early	PRKG2	1	3.55933170866562	Kinase/ phosphatase
+early	MAPKAPK2	1	8.1981840128596	Kinase/ phosphatase
+early	HIF1A	-1	-3.08195616325697	TF
+early	ITGA11	1	2.85982704948814	Secreted proteins
+early	SERPINE1	1	1.70499373223532	Secreted proteins
+early	RPS6KB1	1	5.12159555811472	Kinase/ phosphatase
+early	TEAD4	1	3.67604211392994	TF
+early	SMAD1	1	4.45159005032565	TF
+early	ITGB1	1	0.978228405129574	Secreted proteins
+early	AKT1	1	4.88777736993531	Kinase/ phosphatase
+early	CTNNB1	-1		PKN
+early	KLF4	-1	-3.01657882112287	TF
+early	IL11	1	1.66938145913184	Secreted proteins
+early	RB1	1		PKN
+early	PPP2CB	-1	-3.52917605403805	Kinase/ phosphatase
+early	TGFBI	1	3.19261437724975	Secreted proteins
+early	TNC	1	2.76064176432706	Secreted proteins
+early	SMAD3	1		PKN
+early	E2F1	1	3.13549508499233	TF
+early	SMAD4	1	8.55294127708778	TF
+early	BGN	1	2.00132891890432	Secreted proteins
+early	FOXO4	-1	-3.95734228555743	TF
+early	FOXL2	1	4.03305933481831	TF
+early	TP53	-1	-3.42603033011242	TF
+early	RARA	1	4.38823423857732	TF
+early	GDF5	-1	-1.36146029881674	Secreted proteins
+early	LGALS1	-1	-0.734546421665065	Secreted proteins
+early	ROCK1	-1	-3.3228346550483	Kinase/ phosphatase
+early	CDK3	-1	-3.06511335490922	Kinase/ phosphatase
+early	CSTB	1	0.705240776441553	Secreted proteins
+early	FBN1	1	2.15522493283978	Secreted proteins
+early	FOS	1		PKN
+early	NR4A1	1	3.53335737646248	TF
+early	PRKCZ	-1	-3.09589143804074	Kinase/ phosphatase
+early	CCN2	1	1.25013721176529	Secreted proteins
+early	AKT3	1	3.36876611315632	Kinase/ phosphatase
+early	LOXL2	1	0.796275622723886	Secreted proteins
+early	SERPINE2	1	1.62617586730168	Secreted proteins
+early	RELA	1		PKN
+early	MMP14	1	1.24635814073465	Secreted proteins
+early	ROCK2	-1	-9.48749990087582	Kinase/ phosphatase
+early	GREM1	1	1.21661291522471	Secreted proteins
+early	INHBA	1	0.745945528139622	Secreted proteins
+early	COL1A1	1	1.82142377333025	Secreted proteins
+early	FLI1	1	3.03731448711324	TF
+early	MMP11	1	0.631090371320994	Secreted proteins
+early	ID3	1		PKN
+early	SP1	1		PKN
+early	CSNK2A2	1	4.37510804601231	Kinase/ phosphatase
+early	ZBTB7A	-1	-3.44034465740237	TF
+early	SRF	1	8.9444071968422	TF
+early	FOXK2	-1	-3.36692548452396	TF
+early	_s	1		PKN
+early	_pert_C1	1		PKN
+early	_meas_C1	1		PKN
+early	_t	1		PKN
+late	YAP1	1		PKN
+late	MAP3K8	1	3.57767734034484	Kinase/ phosphatase
+late	HSPG2	1	1.11517316569613	Secreted proteins
+late	EPAS1	1	4.49927638117657	TF
+late	FZD5	-1		PKN
+late	EGFR	1		PKN
+late	ADAM12	1	1.9033332226238	Secreted proteins
+late	MAPK1	1	4.38986907462386	Kinase/ phosphatase
+late	KLF9	1	3.98127353552149	TF
+late	CSNK2A1	1	3.52633306500988	Kinase/ phosphatase
+late	GDF6	1	1.72874758883457	Secreted proteins
+late	MAPK3	-1		PKN
+late	MAP2K1	1	3.21088488745788	Kinase/ phosphatase
+late	TGFB1	1		PKN
+late	FN1	1	1.98553197709245	Secreted proteins
+late	E2F4	-1	-7.9202022700616	TF
+late	ADGRG1	1	2.04269733733089	Secreted proteins
+late	PAX6	1	4.64078635345319	TF
+late	AR	1		PKN
+late	NFKB2	1		PKN
+late	CDK6	-1	-3.33701206469652	Kinase/ phosphatase
+late	COL5A1	1	1.70831824855303	Secreted proteins
+late	ABL1	1	3.95485029515825	Kinase/ phosphatase
+late	TAGLN	1	1.65671743063888	Secreted proteins
+late	REL	-1	-3.01939940654103	TF
+late	ACVR1	1		PKN
+late	RHOA	1		PKN
+late	IGFBP3	1	2.48381105702776	Secreted proteins
+late	SMAD5	1	5.28776320461804	TF
+late	ATF6	1	4.52606130295283	TF
+late	SFRP2	1	3.56350246536542	Secreted proteins
+late	TRIM28	1		PKN
+late	RPS6KA1	-1	-3.10724753492055	Kinase/ phosphatase
+late	PLAT	-1		PKN
+late	STAT5B	-1		PKN
+late	SPARC	1	1.20928500744585	Secreted proteins
+late	MMP2	1	1.70579455752466	Secreted proteins
+late	SRC	1	3.72996342328993	Kinase/ phosphatase
+late	PIK3CA	1		PKN
+late	ATF4	-1	-3.57520100443674	TF
+late	STAT3	-1		PKN
+late	STAT2	-1	-5.83011048988043	TF
+late	PRKACA	-1	-3.07779110378639	Kinase/ phosphatase
+late	GLI1	-1	-4.92991118928574	TF
+late	RAF1	-1	-3.16486724679438	Kinase/ phosphatase
+late	KMT2A	1	3.44007386712159	TF
+late	FOXM1	-1	-4.94233587173812	TF
+late	MYC	-1	-3.49769521817443	TF
+late	MAPKAPK2	1	3.44149793367706	Kinase/ phosphatase
+late	ITGA11	1	2.85982704948814	Secreted proteins
+late	SERPINE1	1	1.67134046508403	Secreted proteins
+late	PPP2CA	-1	-4.56435358526035	Kinase/ phosphatase
+late	RNF14	-1		PKN
+late	TEAD4	1	3.92153897057397	TF
+late	ITGB1	1	0.978228405129574	Secreted proteins
+late	AKT1	-1	-3.08119516431895	Kinase/ phosphatase
+late	PTK2	1	6.63094839888729	Kinase/ phosphatase
+late	CTNNB1	1		PKN
+late	PTPRG	-1	-4.99528469473702	Kinase/ phosphatase
+late	IL11	1	1.49389278012386	Secreted proteins
+late	ITGA2	1		PKN
+late	NR3C1	1		PKN
+late	CTCF	-1		PKN
+late	NFKB1	1	3.11993169998421	TF
+late	TNC	1	2.76064176432706	Secreted proteins
+late	BMPR1A	1		PKN
+late	RFX5	-1	-3.51680501530276	TF
+late	PRKACB	1		PKN
+late	E2F1	-1	-3.05389501416479	TF
+late	SMAD4	1	5.82714034731958	TF
+late	MET	1	3.50561693884316	Kinase/ phosphatase
+late	CIITA	-1		PKN
+late	SREBF1	-1	-3.21761477564632	TF
+late	TP53	1	7.71075147368126	TF
+late	GDF5	-1	-1.42591770199954	Secreted proteins
+late	ROCK1	-1	-3.93282664262545	Kinase/ phosphatase
+late	ETS1	1	3.60073641681517	TF
+late	FBN1	1	2.15522493283978	Secreted proteins
+late	PRKCZ	-1	-4.05168840184032	Kinase/ phosphatase
+late	PLK1	-1		PKN
+late	PAX8	-1	-3.96062004570037	TF
+late	PDGFD	-1		PKN
+late	CCN2	1	1.25013721176529	Secreted proteins
+late	SERPINE2	1	1.62617586730168	Secreted proteins
+late	PDK1	-1	-3.35153595932948	Kinase/ phosphatase
+late	MMP14	1	1.79823059490795	Secreted proteins
+late	ROCK2	-1	-6.28649683065035	Kinase/ phosphatase
+late	GREM1	1	1.12025364370876	Secreted proteins
+late	INHBA	1	1.29310891739215	Secreted proteins
+late	COL1A1	1	1.82142377333025	Secreted proteins
+late	SP1	1		PKN
+late	ELF3	-1	-3.09556826025292	TF
+late	IL6ST	1		PKN
+late	FOXA1	-1	-4.32028388616329	TF
+late	SRF	1	8.97467556455604	TF
+late	_s	1		PKN
+late	_pert_C1	1		PKN
+late	_meas_C1	1		PKN
+late	_t	1		PKN
+late	MAP3K8	1	3.57767734034484	Kinase/ phosphatase
+late	HSPG2	1	1.11517316569613	Secreted proteins
+late	EPAS1	1	4.49927638117657	TF
+late	JUP	1	2.63190922187009	Secreted proteins
+late	SOX9	-1		PKN
+late	ETS2	1		PKN
+late	CSPG4	1	0.878205157757055	Secreted proteins
+late	IGFBP7	1	1.38007126642596	Secreted proteins
+late	ADAM12	1	1.9033332226238	Secreted proteins
+late	MAPK1	1	4.38986907462386	Kinase/ phosphatase
+late	KLF9	1	3.98127353552149	TF
+late	COL11A1	1	0.802681089212538	Secreted proteins
+late	PIK3R1	-1		PKN
+late	GREM2	-1		PKN
+late	EGR1	1		PKN
+late	STAT1	1		PKN
+late	LAMB1	1	0.657168584368911	Secreted proteins
+late	SFRP1	-1	-0.907039735850383	Secreted proteins
+late	CSNK2A1	1	3.52633306500988	Kinase/ phosphatase
+late	GATA6	1		PKN
+late	GDF6	1	1.72874758883457	Secreted proteins
+late	NR4A2	-1		PKN
+late	MAP2K1	1	3.21088488745788	Kinase/ phosphatase
+late	FN1	1	1.98553197709245	Secreted proteins
+late	E2F4	-1	-7.9202022700616	TF
+late	E2F5	1		PKN
+late	TFAP2A	1		PKN
+late	ADGRG1	1	2.04269733733089	Secreted proteins
+late	ATF1	1		PKN
+late	PAX6	1	4.64078635345319	TF
+late	CDK6	-1	-3.33701206469652	Kinase/ phosphatase
+late	COL5A1	1	1.70831824855303	Secreted proteins
+late	IGFBP4	-1	-0.690686656570691	Secreted proteins
+late	ABL1	1	3.95485029515825	Kinase/ phosphatase
+late	TAGLN	1	1.65671743063888	Secreted proteins
+late	REL	-1	-3.01939940654103	TF
+late	HMCN1	1	1.08837823093116	Secreted proteins
+late	MATN3	1	0.853226759280428	Secreted proteins
+late	PDGFC	1	0.615797670620722	Secreted proteins
+late	HTRA1	1	1.32026238895624	Secreted proteins
+late	IGFBP3	1	2.48381105702776	Secreted proteins
+late	SMAD5	1	5.28776320461804	TF
+late	HDLBP	1		PKN
+late	AMIGO2	1	2.37956130537014	Secreted proteins
+late	LAMA3	-1	-0.721492104381007	Secreted proteins
+late	ATF6	1	4.52606130295283	TF
+late	C1QTNF5	1	0.937277906014147	Secreted proteins
+late	SFRP2	1	3.56350246536542	Secreted proteins
+late	RPS6KA1	-1	-3.10724753492055	Kinase/ phosphatase
+late	SPARC	1	1.20928500744585	Secreted proteins
+late	MMP2	1	1.70579455752466	Secreted proteins
+late	VIM	1	0.614102941092797	Secreted proteins
+late	SRC	1	3.72996342328993	Kinase/ phosphatase
+late	LTBP4	1	0.612968871658587	Secreted proteins
+late	ATF4	-1	-3.57520100443674	TF
+late	STAT3	1		PKN
+late	STAT2	-1	-5.83011048988043	TF
+late	GPC4	1	0.585311725585917	Secreted proteins
+late	PRKACA	-1	-3.07779110378639	Kinase/ phosphatase
+late	VCAN	1	0.638333874076199	Secreted proteins
+late	GLI1	-1	-4.92991118928574	TF
+late	RAF1	-1	-3.16486724679438	Kinase/ phosphatase
+late	ADAM19	1	0.915808906471128	Secreted proteins
+late	KMT2A	1	3.44007386712159	TF
+late	FOXM1	-1	-4.94233587173812	TF
+late	MYC	-1	-3.49769521817443	TF
+late	POSTN	1	2.78478649225613	Secreted proteins
+late	MAPKAPK2	1	3.44149793367706	Kinase/ phosphatase
+late	COL1A2	-1	-0.896571578321231	Secreted proteins
+late	ITGA11	1	2.85982704948814	Secreted proteins
+late	JUNB	1		PKN
+late	SPP1	-1	-0.825407097553338	Secreted proteins
+late	COL7A1	1	0.995187360314777	Secreted proteins
+late	SERPINE1	1	1.67134046508403	Secreted proteins
+late	PPP2CA	-1	-4.56435358526035	Kinase/ phosphatase
+late	TEAD4	1	3.92153897057397	TF
+late	ITGB1	1	0.978228405129574	Secreted proteins
+late	RFX1	1	3.35367159523803	TF
+late	AKT1	-1	-3.08119516431895	Kinase/ phosphatase
+late	PTK2	1	6.63094839888729	Kinase/ phosphatase
+late	CTNNB1	-1		PKN
+late	KLF4	-1		PKN
+late	PTPRG	-1	-4.99528469473702	Kinase/ phosphatase
+late	IL11	1	1.49389278012386	Secreted proteins
+late	HNF4G	-1	-3.0932715002455	TF
+late	CTCF	1		PKN
+late	TGFBI	1	3.19261437724975	Secreted proteins
+late	NFKB1	1	3.11993169998421	TF
+late	TNC	1	2.76064176432706	Secreted proteins
+late	RFX5	-1	-3.51680501530276	TF
+late	SDC4	-1	-0.933639642067735	Secreted proteins
+late	E2F1	-1	-3.05389501416479	TF
+late	SMAD4	1	5.82714034731958	TF
+late	MET	1	3.50561693884316	Kinase/ phosphatase
+late	CIITA	-1		PKN
+late	RBPJ	1		PKN
+late	SREBF1	-1	-3.21761477564632	TF
+late	BGN	1	2.00132891890432	Secreted proteins
+late	ANXA1	-1	-0.644078178977388	Secreted proteins
+late	TP53	1	7.71075147368126	TF
+late	ADAMTS7	1	1.16420730999675	Secreted proteins
+late	GDF5	-1	-1.42591770199954	Secreted proteins
+late	LGALS1	-1	-0.600502357322323	Secreted proteins
+late	ROCK1	-1	-3.93282664262545	Kinase/ phosphatase
+late	YBX1	-1		PKN
+late	ETS1	1	3.60073641681517	TF
+late	FBN1	1	2.15522493283978	Secreted proteins
+late	PRKCZ	-1	-4.05168840184032	Kinase/ phosphatase
+late	PAX8	-1	-3.96062004570037	TF
+late	SEMA3C	1	1.10832490025925	Secreted proteins
+late	CCN2	1	1.25013721176529	Secreted proteins
+late	COL4A1	1	1.03038871826776	Secreted proteins
+late	MAPK8	1		PKN
+late	LTBP3	1	0.756756111328691	Secreted proteins
+late	S100A6	-1	-0.808014346988607	Secreted proteins
+late	GDF15	1	0.694232946636347	Secreted proteins
+late	LOXL2	1	0.796275622723886	Secreted proteins
+late	SERPINE2	1	1.62617586730168	Secreted proteins
+late	SRGN	-1	-1.19234102925383	Secreted proteins
+late	PDK1	-1	-3.35153595932948	Kinase/ phosphatase
+late	RELA	1		PKN
+late	S100A11	1	0.815921365728869	Secreted proteins
+late	MMP14	1	1.79823059490795	Secreted proteins
+late	ROCK2	-1	-6.28649683065035	Kinase/ phosphatase
+late	COL2A1	-1		PKN
+late	GREM1	1	1.12025364370876	Secreted proteins
+late	CREBBP	-1		PKN
+late	INHBA	1	1.29310891739215	Secreted proteins
+late	COL1A1	1	1.82142377333025	Secreted proteins
+late	COL4A2	1	1.20039445968856	Secreted proteins
+late	RUNX1	-1		PKN
+late	MMP11	1	1.17895010569368	Secreted proteins
+late	NFE2L2	1		PKN
+late	AGT	-1		PKN
+late	ID3	1		PKN
+late	SP1	1		PKN
+late	ELF3	-1	-3.09556826025292	TF
+late	CSNK2A2	1	4.29387434989791	Kinase/ phosphatase
+late	LAMC1	1	0.605536994595827	Secreted proteins
+late	PXDN	1	0.749325474876198	Secreted proteins
+late	FOXA1	-1	-4.32028388616329	TF
+late	THBS1	1	0.654310816297684	Secreted proteins
+late	SRF	1	8.97467556455604	TF
+late	_s	1		PKN
+late	_pert_C1	1		PKN
+late	_meas_C1	1		PKN
+late	_t	1		PKN
