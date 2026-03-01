@@ -48,10 +48,22 @@ then mapped onto a prior knowledge network of signed, directed
 protein–protein interactions from OmniPath (Türei *et al.*, 2026). The
 optimization finds subnetworks that most parsimoniously explain the observed
 activity patterns given TGF-beta as the known perturbation. Multiple network
-inference steps are performed to capture the temporal dynamics: an initial
-network with only TGF-beta as input, an early response network incorporating
-early secretome hits, an early-to-late transition network, and a late response
-network.
+inference steps are performed to capture the temporal dynamics:
+
+| Model | Perturbations (input) | Measurements (output) |
+|---|---|---|
+| 1. Initial | TGFB1 | early TF/kinase activities |
+| 2. Early | early TF/kinase activities + TGFB1 | early secretome |
+| 3. Early→late | early secretome + TGFB1 | late TF/kinase activities |
+| 4. Late | late TF/kinase activities | late secretome |
+
+In model 1, only TGF-beta is the known perturbation, and the network must
+explain the observed early enzyme activities. In model 2, the early activities
+together with TGFB1 are taken as given, and the network explains the secretome
+changes — this is the model we implement in our tutorial. Models 3 and 4
+extend this to the late time points: the early secretome feeds back as
+signaling input (via receptors), and late activities or late secretome serve as
+measurements, respectively.
 
 The study validates its findings in several ways: by comparing to kidney
 fibrosis patient transcriptomics data, by testing the model in lung

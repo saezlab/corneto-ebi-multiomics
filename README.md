@@ -138,7 +138,7 @@ uv run python
 data/
   differential/
     diff_expr_all.tsv          # Differential expression, all omics & time points
-    enzyme_activities.tsv      # TF and kinase activity scores
+    activities.tsv             # TF and kinase activity scores
   network/
     paper_edges.tsv            # Published network edges (for comparison)
     paper_nodes.tsv            # Published network nodes (for comparison)
@@ -201,11 +201,11 @@ The input data comes from the supplementary tables of [Tüchler *et al.*
   phosphoproteomics, secretomics) across 7 time points after TGF-beta
   stimulation vs. control. 391,105 measurements.
 
-- **Enzyme activities** (`enzyme_activities.tsv`): Transcription factor and
+- **Enzyme activities** (`activities.tsv`): Transcription factor and
   kinase activity scores inferred by Decoupler from transcriptomics
-
   (for TFs, using CollecTRI) and phosphoproteomics (for kinases, using
-  a kinase-substrate network). 128 significant activities.
+  a kinase-substrate network). 287 TFs and 157 kinases across 7 time points
+  (3,108 rows total).
 
 - **Imaging data** (`col1_timecourse.tsv`): Collagen I fluorescence
   intensity from immunofluorescence microscopy across the time course,
