@@ -25,29 +25,30 @@ Aurelien Dugourd](https://github.com/saezlab/COSMOS_basic) (Dugourd *et al.*,
 ## Data and study background
 
 Our example data comes from a study of kidney fibrosis by [Tüchler *et al.*
-(2025)](#references). It employs an _in vitro_ model of TGF-beta-induced fibrotic
+(2025)](#references). It employs an _in vitro_ model of _TGF-beta_-induced fibrotic
 transformation of PDGFR-beta positive patient derived kidney mesenchymal cells.
 These cells are similar to myofibroblasts, the main cell type responsible for
 excess extracellular matrix (ECM) deposition in fibrosis. The study generated a
 comprehensive time-resolved multi-omics dataset spanning 7 time
-points (5 min to 96 h) and 4 omics modalities under 10 ng/l TGF-beta
+points (5 min to 96 h) and 4 omics modalities under 10 ng/l _TGF-beta_
 stimulation, quantifying over 14,000 biomolecules. The omics modalities include
 transcriptomics, phosphoproteomics, proteomics, and secretomics, complemented
 with imaging of _collagen I_ deposition. Furthermore, it also correlates and
 validates its results by comparing to kidney fibrosis patient data, as well as
 _in vitro_ data from patient lung fibroblasts and tissue slices. Another
-important validation is the quantification of collagen I deposition under
+important validation is the quantification of _collagen I_ deposition under
 knock-down of transcription factors most significant based on the main
-experiment. Importantly, while we also measure collagen I as transcript and
-protein, the actual ECM fiber deposition doesn't only depend on collagen I, but
+experiment. Importantly, while we also measure _collagen I_ as transcript and
+protein, the actual ECM fiber deposition doesn't only depend on _collagen I_, but
 several further proteins which cross-link with it, or build or degrade the ECM.
 A general observation in the study is that the early (especially 1h) and late
-response to TGF-beta is different. To model the time dynamics, multiple network
-inference steps are performed: the initial with only TGF-beta as perturbation,
-then the early response where hits in early secretomics are added as additional
-inputs, early-late where still using the same eatly inputs the network is
-inferred with activities from late omics; and the late response where inputs
-are derived from the late secretomics.
+response to _TGF-beta_ is different. To model the time dynamics, multiple network
+inference steps are performed: the initial with _TGF-beta_ as the only perturbation
+is responsible for the early TF and kinase activity patterns; then the early
+activities (plus _TGF-beta_) become the inputs and the early secretomics hits are
+the targets; next the early transcriptomics considered to be the perturbations
+and the late activities are the outputs; and finally, the connections between
+these late activity hits and the late secretomics are inferred.
 
 ## Tools
 
@@ -177,7 +178,7 @@ for expressed genes, and prune it for reachability.
 
 Using the CARNIVAL algorithm (Liu *et al.*, 2019) implemented in CORNETO
 (Rodriguez-Mier *et al.*, 2025), we find an optimal subnetwork of the prior
-knowledge network that connects upstream perturbations (TGF-beta stimulus,
+knowledge network that connects upstream perturbations (_TGF-beta_ stimulus,
 kinase and TF activities) to downstream measurements (secreted protein
 changes). We can do more than one network inference, depending on time maybe we
 start network inference already in the previous session. In this project,
@@ -190,7 +191,7 @@ infer an early and a late network, following similar steps as in the paper.
 
 We visualize the inferred network, the activities, compare them to the
 published results, and interpret the findings in the context of kidney fibrosis
-biology. We also have available the collagen I deposition data from imaging.
+biology. We also have available the _collagen I_ deposition data from imaging.
 
 **Script:** `scripts/04_visualize_results.py`
 
@@ -201,7 +202,7 @@ The input data comes from the supplementary tables of [Tüchler *et al.*
 
 - **Differential expression** (`diff_expr_all.tsv.gz`): Log fold changes and
   adjusted p-values for all omics modalities (rna, proteomics,
-  phosphoproteomics, secretomics) across 7 time points after TGF-beta
+  phosphoproteomics, secretomics) across 7 time points after _TGF-beta_
   stimulation vs. control. 391,105 measurements.
 
 - **Molecular activities** (`activities.tsv`): Transcription factor and
