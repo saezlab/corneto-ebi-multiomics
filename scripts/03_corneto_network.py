@@ -1,4 +1,5 @@
-"""CARNIVAL network inference with CORNETO.
+"""
+CARNIVAL network inference with CORNETO.
 
 This script uses the CARNIVAL algorithm (implemented in CORNETO) to find
 an optimal subnetwork of the prior knowledge network that connects
@@ -29,6 +30,7 @@ try:
     _script_root = Path(__file__).resolve().parent.parent
 except NameError:
     _script_root = Path.cwd()
+
 DATA_DIR = _script_root / "data" if (_script_root / "data").is_dir() else Path("data")
 RESULTS_DIR = _script_root / "results" if (_script_root / "data").is_dir() else Path("results")
 RESULTS_DIR.mkdir(exist_ok=True)
@@ -41,7 +43,7 @@ secretome_early = pd.read_csv(DATA_DIR / "differential" / "secretome_early.tsv",
 
 print(f"PKN: {len(pkn)} interactions, "
       f"{len(set(pkn['source']) | set(pkn['target']))} nodes")
-print(f"Perturbation nodes: {len(activities)}")
+print(f"Perturbation nodes: {len(activities_early)}")
 print(f"Measurements (secretome): {len(secretome_early)}")
 
 # %% 2. Build CORNETO Graph from PKN
@@ -165,7 +167,28 @@ print("\nObjective values:")
 for i, obj in enumerate(problem.objectives):
     print(f"  Objective {i}: {obj.value}")
 
-# %% 6. Extract results
+# %% 6. Visualize with CORNETO's built-in plotting
+#
+# CORNETO can plot the solved network directly using its plotting utilities.
+# cn.pl.edge_style and cn.pl.vertex_style extract graphviz attributes
+# from the solved problem, coloring nodes and edges by their sign
+# (red = activated, blue = inhibited). edge_indexes filters to active edges.
+
+active_edges = list(np.flatnonzero(problem.expr.edge_has_signal.value))
+
+g = carnival.processed_graph.plot(
+    custom_edge_attr=cn.pl.edge_style(problem, edge_var="edge_value"),
+    custom_vertex_attr=cn.pl.vertex_style(problem, carnival.processed_graph,
+                                          vertex_var="vertex_value"),
+    edge_indexes=active_edges,
+)
+
+# g is a graphviz.Digraph: in a notebook it renders inline,
+# from the terminal we save it to file
+g.render(RESULTS_DIR / "network_corneto", format="pdf", cleanup=True)
+print(f"Saved network plot to {RESULTS_DIR / 'network_corneto.pdf'}")
+
+# %% 7. Extract results
 #
 # Get edge and vertex activity values from the solution.
 
@@ -208,7 +231,7 @@ for i, name in enumerate(vertex_names):
 nodes_df = pd.DataFrame(nodes_result)
 print(f"Active nodes: {len(nodes_df)}")
 
-# %% 7. Save results
+# %% 8. Save results
 
 edges_df.to_csv(RESULTS_DIR / "network_edges.tsv", sep="\t", index=False)
 nodes_df.to_csv(RESULTS_DIR / "network_nodes.tsv", sep="\t", index=False)
@@ -217,7 +240,7 @@ print(f"\nSaved results to {RESULTS_DIR}:")
 print(f"  network_edges.tsv ({len(edges_df)} edges)")
 print(f"  network_nodes.tsv ({len(nodes_df)} nodes)")
 
-# %% 8. Quick summary statistics
+# %% 9. Quick summary statistics
 
 if len(edges_df) > 0:
     print(f"\nNetwork summary:")
