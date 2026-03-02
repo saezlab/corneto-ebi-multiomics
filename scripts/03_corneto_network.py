@@ -214,7 +214,7 @@ edges_df = pd.DataFrame(edges_result).sort_values(["source", "target"]).reset_in
 print(f"\nActive edges: {len(edges_df)}")
 
 # Build node result table
-vertex_names = G.V  # vertex names (tuple)
+vertex_names = carnival.processed_graph.V
 nodes_result = []
 
 for i, name in enumerate(vertex_names):
