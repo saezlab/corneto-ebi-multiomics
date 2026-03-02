@@ -10,6 +10,8 @@ This script prepares all inputs needed for CORNETO network inference:
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 import omnipath as op
 from pathlib import Path
 
@@ -128,6 +130,78 @@ activities_late = activities_late[~activities_late["source"].isin(secretome_earl
 
 print(f"\nLate measurement enzymes (significant): {len(activities_late)}")
 print(activities_late.head(10))
+
+# %% 5b. Heatmap of significant enzyme activities across all time points
+#
+# Union of enzymes significant in early or late phases, showing the full
+# time course (0.08h–96h). This reveals the temporal dynamics: which
+# activities are transient, sustained, or late-onset.
+
+ALL_TIMES = ["0.08h", "1h", "12h", "24h", "48h", "72h", "96h"]
+
+all_selected = set(activities_early["source"]) | set(activities_late["source"])
+
+act_matrix = (
+    activities
+    .query("source in @all_selected")
+    .pivot(index="source", columns="time", values="score")
+    .reindex(columns=ALL_TIMES)
+)
+
+# Sort by max |score| across all time points
+act_matrix = act_matrix.loc[
+    act_matrix.abs().max(axis=1).sort_values(ascending=False).index
+]
+
+vmax = act_matrix.abs().max().max()
+fig, ax = plt.subplots(figsize=(5, max(6, len(act_matrix) * 0.22)))
+sns.heatmap(
+    act_matrix, cmap="RdBu_r", center=0, vmin=-vmax, vmax=vmax,
+    linewidths=0.5, ax=ax, cbar_kws={"label": "Activity score"},
+)
+ax.set_title("Significant TF/kinase activities")
+ax.set_ylabel("")
+plt.tight_layout()
+plt.savefig(RESULTS_DIR / "activities_heatmap.pdf", bbox_inches="tight")
+plt.savefig(RESULTS_DIR / "activities_heatmap.png", dpi=150, bbox_inches="tight")
+print(f"Saved activity heatmap ({len(act_matrix)} enzymes) "
+      f"to {RESULTS_DIR / 'activities_heatmap.pdf'}")
+plt.show()
+
+# %% 5c. Heatmap of secretome fold changes across all time points
+#
+# Secretomics data is available from 12h onwards. We show the selected
+# secretome proteins (significant in the early window) across all
+# available time points.
+
+SECRETOME_TIMES = ["12h", "24h", "48h", "72h", "96h"]
+
+sec_matrix = (
+    diff_expr
+    .query("modality == 'secretomics' and feature_id in @secretome_early['id'].values")
+    .pivot(index="feature_id", columns="time", values="logFC")
+    [SECRETOME_TIMES]
+)
+
+# Sort by max |logFC| across all time points
+sec_matrix = sec_matrix.loc[
+    sec_matrix.abs().max(axis=1).sort_values(ascending=False).index
+]
+
+vmax = sec_matrix.abs().max().max()
+fig, ax = plt.subplots(figsize=(5, max(6, len(sec_matrix) * 0.22)))
+sns.heatmap(
+    sec_matrix, cmap="RdBu_r", center=0, vmin=-vmax, vmax=vmax,
+    linewidths=0.5, ax=ax, cbar_kws={"label": "log₂ FC"},
+)
+ax.set_title("Secretome fold changes (measurements)")
+ax.set_ylabel("")
+plt.tight_layout()
+plt.savefig(RESULTS_DIR / "secretome_heatmap.pdf", bbox_inches="tight")
+plt.savefig(RESULTS_DIR / "secretome_heatmap.png", dpi=150, bbox_inches="tight")
+print(f"Saved secretome heatmap ({len(sec_matrix)} proteins) "
+      f"to {RESULTS_DIR / 'secretome_heatmap.pdf'}")
+plt.show()
 
 # %% 6. Retrieve prior knowledge network from OmniPath
 #
