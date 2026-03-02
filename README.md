@@ -152,9 +152,9 @@ scripts/
 results/                       # Generated outputs (networks, figures)
 ```
 
-## Tutorial outline
+## Group project schedule
 
-### Introduction (30 min): Activity inference with Decoupler
+### Session 1 (1:45 h): Intro and activity inference with Decoupler
 
 We start by demonstrating how transcription factor (TF) activities can be
 inferred from transcriptomics data using Decoupler (Badia-i-Mompel *et al.*,
@@ -164,7 +164,7 @@ integration step.
 
 **Script:** `scripts/01_decoupler_demo.py`
 
-### Session 1 (1.5 h): Data preparation and prior knowledge network
+### Session 2 (2:15 h): Data preparation and prior knowledge network
 
 We load the differential omics data, select time points and modalities,
 and prepare the inputs for CORNETO. We retrieve a signed, directed
@@ -173,21 +173,24 @@ for expressed genes, and prune it for reachability.
 
 **Script:** `scripts/02_prepare_inputs.py`
 
-### Session 2 (1.5 h): Network inference with CORNETO
+### Session 2 (2:00 h): Network inference with CORNETO
 
 Using the CARNIVAL algorithm (Liu *et al.*, 2019) implemented in CORNETO
 (Rodriguez-Mier *et al.*, 2025), we find an optimal subnetwork of the prior
-knowledge network that connects upstream
-perturbations (TGF-beta stimulus, kinase and TF activities) to downstream
-measurements (secreted protein changes). The optimization balances data
-fit against network parsimony.
+knowledge network that connects upstream perturbations (TGF-beta stimulus,
+kinase and TF activities) to downstream measurements (secreted protein
+changes). We can do more than one network inference, depending on time maybe we
+start network inference already in the previous session. In this project,
+because the longitudinal nature of the data poses additional challenge, we can
+infer an early and a late network, following similar steps as in the paper.
 
 **Script:** `scripts/03_corneto_network.py`
 
-### Session 3 (1.5 h): Visualization and interpretation
+### Session 3 (3:30 h): Visualization and interpretation
 
-We visualize the inferred network, compare it to the published results,
-and interpret the findings in the context of kidney fibrosis biology.
+We visualize the inferred network, the activities, compare them to the
+published results, and interpret the findings in the context of kidney fibrosis
+biology. We also have available the collagen I deposition data from imaging.
 
 **Script:** `scripts/04_visualize_results.py`
 
@@ -201,7 +204,7 @@ The input data comes from the supplementary tables of [Tüchler *et al.*
   phosphoproteomics, secretomics) across 7 time points after TGF-beta
   stimulation vs. control. 391,105 measurements.
 
-- **Enzyme activities** (`activities.tsv`): Transcription factor and
+- **Molecular activities** (`activities.tsv`): Transcription factor and
   kinase activity scores inferred by Decoupler from transcriptomics
   (for TFs, using CollecTRI) and phosphoproteomics (for kinases, using
   a kinase-substrate network). 287 TFs and 157 kinases across 7 time points
