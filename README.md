@@ -173,7 +173,7 @@ for expressed genes, and prune it for reachability.
 
 **Script:** `scripts/02_prepare_inputs.py`
 
-### Session 2 (2:00 h): Network inference with CORNETO
+### Session 3 (2:00 h): Network inference with CORNETO
 
 Using the CARNIVAL algorithm (Liu *et al.*, 2019) implemented in CORNETO
 (Rodriguez-Mier *et al.*, 2025), we find an optimal subnetwork of the prior
@@ -186,7 +186,7 @@ infer an early and a late network, following similar steps as in the paper.
 
 **Script:** `scripts/03_corneto_network.py`
 
-### Session 3 (3:30 h): Visualization and interpretation
+### Session 4 (3:30 h): Visualization and interpretation
 
 We visualize the inferred network, the activities, compare them to the
 published results, and interpret the findings in the context of kidney fibrosis
