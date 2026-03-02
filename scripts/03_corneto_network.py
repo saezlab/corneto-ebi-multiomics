@@ -210,7 +210,7 @@ for i, (src, sign, tgt) in enumerate(edge_tuples):
         })
 
 
-edges_df = pd.DataFrame(edges_result)
+edges_df = pd.DataFrame(edges_result).sort_values(["source", "target"]).reset_index(drop=True)
 print(f"\nActive edges: {len(edges_df)}")
 
 # Build node result table
@@ -228,7 +228,7 @@ for i, name in enumerate(vertex_names):
             "type": node_type,
         })
 
-nodes_df = pd.DataFrame(nodes_result)
+nodes_df = pd.DataFrame(nodes_result).sort_values("node").reset_index(drop=True)
 print(f"Active nodes: {len(nodes_df)}")
 
 # %% 8. Save results
