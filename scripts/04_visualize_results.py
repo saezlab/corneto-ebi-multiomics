@@ -3,14 +3,20 @@ Network visualization and interpretation.
 
 This script visualizes the CORNETO network inference results and
 compares them with the published network from Tüchler et al. (2025).
+
+It rebuilds a CORNETO Graph from the exported TSV files (network_edges.tsv,
+network_nodes.tsv) and uses CORNETO's built-in signaling preset for plotting.
+This decouples visualization from the optimization run in script 03.
 """
 
 import pandas as pd
 import numpy as np
-import graphviz
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
+
+import corneto as cn
+from corneto.graph import Graph
 
 
 # %% Setting up paths for data and results
@@ -32,82 +38,46 @@ nodes = pd.read_csv(RESULTS_DIR / "network_nodes.tsv", sep="\t")
 
 print(f"Network: {len(edges)} edges, {len(nodes)} nodes")
 
-# %% 2. Load input data for annotation
-
-activities_early = pd.read_csv(DATA_DIR / "differential" / "activities_early.tsv", sep="\t")
-secretome_early = pd.read_csv(DATA_DIR / "differential" / "secretome_early.tsv", sep="\t")
-
-input_nodes = set(activities_early["source"]) | {"TGFB1"}
-output_nodes = set(secretome_early["id"])
-
-# %% 3. Network visualization with graphviz
+# %% 2. Rebuild CORNETO Graph and Data from exported results
 #
-# Color scheme:
-# - Red fill: perturbation / stimulus (TGFB1)
-# - Pink fill: perturbation nodes (TF/kinase activities)
-# - Light green fill: measurement nodes (secretome)
-# - White: intermediate signaling nodes
+# We reconstruct the Graph from the edge table and the Data object from
+# the node table, so we can use CORNETO's signaling preset for plotting.
+
+edge_tuples = list(zip(edges["source"], edges["sign"], edges["target"]))
+G = Graph.from_tuples(edge_tuples)
+
+# Rebuild the Data object from node roles and values
+sample_data = {}
+for _, row in nodes.iterrows():
+    if row["type"] in ("input", "output"):
+        sample_data[row["node"]] = {
+            "value": float(row["value"]),
+            "mapping": "vertex",
+            "role": row["type"],
+        }
+data = cn.Data.from_cdict({"early": sample_data})
+
+# Map solution values to the Graph's vertex/edge order
+vertex_value_map = dict(zip(nodes["node"], nodes["value"]))
+vertex_values = [vertex_value_map.get(name, 0.0) for name in G.V]
+edge_values = list(edges["edge_value"])
+
+# %% 3. Network visualization with CORNETO
 #
-# Edge colors:
-# - Red: activation signal
-# - Blue: inhibition signal
-#
-# Arrow styles:
-# - Normal arrow: activation (+1)
-# - Tee (flat end): inhibition (-1)
+# The signaling preset colors nodes and edges by their solution values
+# (red = positive/activated, blue = negative/inhibited), and uses the
+# PKN sign for arrow style (normal = activation, tee = inhibition).
+# feature_data annotates nodes by role (input/output).
 
-
-def build_network_graph(edges_df, nodes_df, input_nodes, output_nodes):
-    """
-    Build a graphviz Digraph from edge and node tables.
-    """
-
-    g = graphviz.Digraph(
-        engine="dot",
-        graph_attr={
-            "rankdir": "TB",
-            "overlap": "false",
-            "splines": "true",
-            "fontname": "Helvetica",
-        },
-        node_attr={
-            "shape": "box",
-            "style": "rounded,filled",
-            "fontname": "Helvetica",
-            "fontsize": "10",
-            "fillcolor": "white",
-        },
-        edge_attr={
-            "fontname": "Helvetica",
-            "fontsize": "8",
-        },
-    )
-
-    # Determine all nodes in the network
-    network_nodes = set(edges_df["source"]) | set(edges_df["target"])
-
-    # Add nodes with type-specific colors
-    for node_name in network_nodes:
-        if node_name == "TGFB1":
-            g.node(node_name, fillcolor="#ff6b6b", fontcolor="white")
-        elif node_name in input_nodes:
-            g.node(node_name, fillcolor="#ffb3b3")
-        elif node_name in output_nodes:
-            g.node(node_name, fillcolor="#b3e6b3")
-        else:
-            g.node(node_name, fillcolor="#f0f0f0")
-
-    # Add edges with sign-specific styling
-    for _, row in edges_df.iterrows():
-        edge_color = "red" if row["edge_value"] > 0 else "blue"
-        arrowhead = "normal" if row["sign"] > 0 else "tee"
-        g.edge(row["source"], row["target"],
-               color=edge_color, arrowhead=arrowhead)
-
-    return g
-
-
-g = build_network_graph(edges, nodes, input_nodes, output_nodes)
+g = G.plot(
+    preset="signaling",
+    feature_data=data,
+    solution={
+        "v": vertex_values,
+        "e": edge_values,
+    },
+    solution_map={"vertex": "v", "edge": "e"},
+)
 
 # Render to file
 g.render(RESULTS_DIR / "network", format="pdf", cleanup=True)

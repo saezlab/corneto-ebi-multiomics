@@ -216,34 +216,44 @@ print(f"Saved network plot to {RESULTS_DIR / 'network_corneto_1.pdf'}")
 # %% 7. Extract results
 #
 # Get edge and vertex activity values from the solution.
+# IMPORTANT: we iterate over carnival.processed_graph (not the original
+# edge_tuples), because CARNIVAL adds auxiliary pseudo-nodes and edges
+# for inputs/outputs. The processed graph's edge indices correspond to
+# the solution arrays (edge_value, edge_has_signal).
 
+pg = carnival.processed_graph
 edge_values = problem.expr.edge_value.value.flatten()
 vertex_values = problem.expr.vertex_value.value.flatten()
+active_mask = problem.expr.edge_has_signal.value.flatten()
 
-# Build edge result table
-# CARNIVAL adds auxiliary edges for perturbations/measurements beyond
-# the original PKN edges; we only extract the original PKN edges.
+# Build edge result table from processed graph
 edges_result = []
 
-for i, (src, sign, tgt) in enumerate(edge_tuples):
-    if abs(edge_values[i]) > 1e-6:  # active edges only
-        edges_result.append({
-            "source": src,
-            "sign": int(sign),
-            "target": tgt,
-            "edge_value": float(edge_values[i]),
-        })
-
+for i in range(pg.num_edges):
+    if abs(active_mask[i]) < 1e-6:
+        continue
+    src_set, tgt_set = pg.get_edge(i)
+    # Skip auxiliary edges (empty source or target = pseudo-node connections)
+    if len(src_set) == 0 or len(tgt_set) == 0:
+        continue
+    src = list(src_set)[0]
+    tgt = list(tgt_set)[0]
+    sign = pg.get_attr_edge(i).get("interaction", 0)
+    edges_result.append({
+        "source": src,
+        "sign": int(sign),
+        "target": tgt,
+        "edge_value": float(edge_values[i]),
+    })
 
 edges_df = pd.DataFrame(edges_result).sort_values(["source", "target"]).reset_index(drop=True)
 print(f"\nActive edges: {len(edges_df)}")
 
 # Build node result table
-vertex_names = carnival.processed_graph.V
 nodes_result = []
 
-for i, name in enumerate(vertex_names):
-    if abs(vertex_values[i]) > 1e-6:  # active nodes only
+for i, name in enumerate(pg.V):
+    if abs(vertex_values[i]) > 1e-6:
         node_type = "intermediate"
         if name in sample_data:
             node_type = sample_data[name]["role"]
