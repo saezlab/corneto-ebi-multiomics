@@ -177,24 +177,41 @@ for i, obj in enumerate(problem.objectives):
 
 # %% 6. Visualize with CORNETO's built-in plotting
 #
-# CORNETO can plot the solved network directly using its plotting utilities.
-# cn.pl.edge_style and cn.pl.vertex_style extract graphviz attributes
-# from the solved problem, coloring nodes and edges by their sign
-# (red = activated, blue = inhibited). edge_indexes filters to active edges.
+# CORNETO's Graph.plot() with preset="signaling" colors nodes and edges
+# by their solution values (red = positive/activated, blue = negative/
+# inhibited), and uses the PKN sign for arrow style (normal = activation,
+# tee/hammer = inhibition). feature_data adds role annotations (input/output).
+#
+# We extract the active subgraph first, so only active edges are plotted.
+# The solution arrays need to be remapped to the subgraph's vertex/edge order.
 
 active_edges = list(np.flatnonzero(problem.expr.edge_has_signal.value))
+edge_values = problem.expr.edge_value.value.flatten()
+vertex_values = problem.expr.vertex_value.value.flatten()
 
-g = carnival.processed_graph.plot(
-    custom_edge_attr=cn.pl.edge_style(problem, edge_var="edge_value"),
-    custom_vertex_attr=cn.pl.vertex_style(problem, carnival.processed_graph,
-                                          vertex_var="vertex_value"),
-    edge_indexes=active_edges,
+# Extract subgraph of active edges only
+subg = carnival.processed_graph.edge_subgraph(active_edges)
+
+# Map solution values from the full graph to the subgraph's vertex order
+full_vertex_names = carnival.processed_graph.V
+full_name_to_idx = {name: i for i, name in enumerate(full_vertex_names)}
+subg_vertex_values = [vertex_values[full_name_to_idx[name]] for name in subg.V]
+subg_edge_values = edge_values[active_edges]
+
+g = subg.plot(
+    preset="signaling",
+    feature_data=data,
+    solution={
+        "v": subg_vertex_values,
+        "e": subg_edge_values,
+    },
+    solution_map={"vertex": "v", "edge": "e"},
 )
 
 # g is a graphviz.Digraph: in a notebook it renders inline,
 # from the terminal we save it to file
-g.render(RESULTS_DIR / "network_corneto", format="pdf", cleanup=True)
-print(f"Saved network plot to {RESULTS_DIR / 'network_corneto.pdf'}")
+g.render(RESULTS_DIR / "network_corneto_1", format="pdf", cleanup=True)
+print(f"Saved network plot to {RESULTS_DIR / 'network_corneto_1.pdf'}")
 
 # %% 7. Extract results
 #
