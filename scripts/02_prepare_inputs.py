@@ -300,6 +300,13 @@ print(f"  Measurement enzymes (late): {len(activities_late)}")
 # We iteratively remove nodes that cannot be reached from perturbation
 # nodes (controllability) or that have no path to measurement nodes
 # (observability). This focuses the network on relevant biology.
+#
+# Why not use the full PKN? Beyond computation cost, a larger network
+# gives the solver more spurious paths to exploit, degrades solution
+# quality (more binary variables = harder to find the true optimum),
+# and risks biologically implausible long-range connections. The step
+# cutoff (~5) reflects that most signaling cascades operate within a
+# few steps. This pruning acts as a regularizer complementing lambda.
 
 import networkx as nx
 
