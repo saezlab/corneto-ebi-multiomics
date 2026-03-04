@@ -131,7 +131,54 @@ print(f"  Shared nodes: {len(node_overlap)}")
 print(f"  Only in published: {len(paper_early_node_set - our_node_set)}")
 print(f"  Only in ours: {len(our_node_set - paper_early_node_set)}")
 
-# %% 5. Node degree distribution
+# %% 5. Plot the published network with CORNETO
+#
+# We use the same signaling preset as for our network, so the two plots
+# are directly comparable. The paper's sign column is "(1)" or "(-1)",
+# which we parse to integer. Node types are mapped to input/output roles:
+# TF and Kinase/phosphatase → input, Secreted proteins → output, PKN → intermediate.
+
+paper_early_sign = paper_early["sign"].str.strip("()").astype(int)
+paper_edge_tuples = list(zip(paper_early["source"], paper_early_sign, paper_early["target"]))
+G_paper = Graph.from_tuples(paper_edge_tuples)
+
+# Map paper node types to CORNETO roles
+PAPER_ROLE_MAP = {
+    "TF": "input",
+    "Kinase/ phosphatase": "input",
+    "Secreted proteins": "output",
+}
+
+paper_sample_data = {}
+for _, row in paper_early_nodes.iterrows():
+    role = PAPER_ROLE_MAP.get(row["type"])
+    if role:
+        paper_sample_data[row["node"]] = {
+            "value": float(row["value"]),
+            "mapping": "vertex",
+            "role": role,
+        }
+paper_data = cn.Data.from_cdict({"early": paper_sample_data})
+
+paper_vertex_map = dict(zip(paper_early_nodes["node"], paper_early_nodes["value"]))
+paper_vertex_values = [float(paper_vertex_map.get(name, 0.0)) for name in G_paper.V]
+paper_edge_values = list(paper_early_sign)
+
+g_paper = G_paper.plot(
+    preset="signaling",
+    feature_data=paper_data,
+    solution={
+        "v": paper_vertex_values,
+        "e": paper_edge_values,
+    },
+    solution_map={"vertex": "v", "edge": "e"},
+)
+
+g_paper.render(RESULTS_DIR / "network_paper_early", format="pdf", cleanup=True)
+g_paper.render(RESULTS_DIR / "network_paper_early", format="png", cleanup=True)
+print(f"\nSaved paper network plot to {RESULTS_DIR / 'network_paper_early.pdf'}")
+
+# %% 6. Node degree distribution
 
 if len(edges) > 0:
     degree = pd.concat([
