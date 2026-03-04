@@ -332,63 +332,103 @@ def reachable_neighbors(pkn_df, n_steps, nodes, direction="downstream"):
     return pkn_df[pkn_df["source"].isin(reachable) & pkn_df["target"].isin(reachable)]
 
 
-# We include nodes from both the early model (model 2: activities → secretome)
-# and the late model (model 3: secretome → late activities), so the pruned PKN
-# supports both analyses.
-all_input_nodes = set(activities_early["source"]) | set(secretome_early["id"]) | {"TGFB1"}
-all_output_nodes = set(secretome_early["id"]) | set(activities_late["source"])
+# We prune the PKN separately for each model, because the same nodes
+# can have different roles (input vs output) across models. Each model
+# needs reachability from its own inputs to its own outputs.
 
-# Iteratively prune until stable
-pkn_pruned = pkn_filtered.copy()
-prev_size = 0
 
-while len(pkn_pruned) != prev_size:
-    prev_size = len(pkn_pruned)
-    pkn_pruned = reachable_neighbors(pkn_pruned, N_STEPS, all_input_nodes, "downstream")
-    pkn_pruned = reachable_neighbors(pkn_pruned, N_STEPS, all_output_nodes, "upstream")
-    # Update input/output nodes to those still in the network
-    pkn_nodes = set(pkn_pruned["source"]) | set(pkn_pruned["target"])
-    all_input_nodes = all_input_nodes & pkn_nodes
-    all_output_nodes = all_output_nodes & pkn_nodes
+def prune_pkn(pkn_df, input_nodes, output_nodes, n_steps):
+    """Iteratively prune PKN for reachability between inputs and outputs."""
+    input_nodes = set(input_nodes)
+    output_nodes = set(output_nodes)
+    pkn_p = pkn_df.copy()
+    prev_size = 0
 
-# Final filter of enzymes and secretome
-activities_early = activities_early[activities_early["source"].isin(pkn_nodes)]
-secretome_early = secretome_early[secretome_early["id"].isin(pkn_nodes)]
-activities_late = activities_late[activities_late["source"].isin(pkn_nodes)]
+    while len(pkn_p) != prev_size:
+        prev_size = len(pkn_p)
+        pkn_p = reachable_neighbors(pkn_p, n_steps, input_nodes, "downstream")
+        pkn_p = reachable_neighbors(pkn_p, n_steps, output_nodes, "upstream")
+        pkn_nodes = set(pkn_p["source"]) | set(pkn_p["target"])
+        input_nodes = input_nodes & pkn_nodes
+        output_nodes = output_nodes & pkn_nodes
 
-print(f"\nPruned PKN (reachability within {N_STEPS} steps):")
-print(f"  Interactions: {len(pkn_pruned)}")
-print(f"  Nodes: {len(pkn_nodes)}")
-print(f"  Perturbation enzymes (early): {len(activities_early)}")
-print(f"  Secretome measurements (early): {len(secretome_early)}")
-print(f"  Measurement enzymes (late): {len(activities_late)}")
+    return pkn_p, pkn_nodes
+
+
+# Model 1 (TGFB1 → early activities): TGFB1 is the sole input, early
+# enzyme activities are the outputs we want to explain.
+pkn_model1, pkn_nodes_m1 = prune_pkn(
+    pkn_filtered,
+    input_nodes={"TGFB1"},
+    output_nodes=set(activities_early["source"]),
+    n_steps=N_STEPS,
+)
+activities_early_m1 = activities_early[activities_early["source"].isin(pkn_nodes_m1)]
+
+print(f"\nModel 1 PKN (TGFB1 → activities, {N_STEPS} steps):")
+print(f"  Interactions: {len(pkn_model1)}, Nodes: {len(pkn_nodes_m1)}")
+print(f"  Output enzymes: {len(activities_early_m1)}")
+
+# Model 2 (activities + TGFB1 → secretome): early enzyme activities and
+# TGFB1 are inputs, secretome fold changes are the outputs.
+pkn_model2, pkn_nodes_m2 = prune_pkn(
+    pkn_filtered,
+    input_nodes=set(activities_early["source"]) | {"TGFB1"},
+    output_nodes=set(secretome_early["id"]),
+    n_steps=N_STEPS,
+)
+activities_early_m2 = activities_early[activities_early["source"].isin(pkn_nodes_m2)]
+secretome_early_m2 = secretome_early[secretome_early["id"].isin(pkn_nodes_m2)]
+
+print(f"\nModel 2 PKN (activities → secretome, {N_STEPS} steps):")
+print(f"  Interactions: {len(pkn_model2)}, Nodes: {len(pkn_nodes_m2)}")
+print(f"  Input enzymes: {len(activities_early_m2)}")
+print(f"  Output secretome: {len(secretome_early_m2)}")
+
+# Model 3 (secretome + TGFB1 → late activities): for future use
+pkn_model3, pkn_nodes_m3 = prune_pkn(
+    pkn_filtered,
+    input_nodes=set(secretome_early["id"]) | {"TGFB1"},
+    output_nodes=set(activities_late["source"]),
+    n_steps=N_STEPS,
+)
+secretome_early_m3 = secretome_early[secretome_early["id"].isin(pkn_nodes_m3)]
+activities_late_m3 = activities_late[activities_late["source"].isin(pkn_nodes_m3)]
+
+print(f"\nModel 3 PKN (secretome → late activities, {N_STEPS} steps):")
+print(f"  Interactions: {len(pkn_model3)}, Nodes: {len(pkn_nodes_m3)}")
+print(f"  Input secretome: {len(secretome_early_m3)}")
+print(f"  Output enzymes: {len(activities_late_m3)}")
 
 # %% 12. Save prepared inputs
 
-pkn_pruned.to_csv(DATA_DIR / "network" / "pkn.tsv", sep="\t", index=False)
+pkn_model1.to_csv(DATA_DIR / "network" / "pkn_model1.tsv", sep="\t", index=False)
+pkn_model2.to_csv(DATA_DIR / "network" / "pkn_model2.tsv", sep="\t", index=False)
+pkn_model3.to_csv(DATA_DIR / "network" / "pkn_model3.tsv", sep="\t", index=False)
 activities_early.to_csv(DATA_DIR / "differential" / "activities_early.tsv", sep="\t", index=False)
 secretome_early.to_csv(DATA_DIR / "differential" / "secretome_early.tsv", sep="\t", index=False)
 activities_late.to_csv(DATA_DIR / "differential" / "activities_late.tsv", sep="\t", index=False)
 
 print(f"\nSaved prepared inputs:")
-print(f"  {DATA_DIR / 'network' / 'pkn.tsv'}")
-print(f"  {DATA_DIR / 'differential' / 'activities_early.tsv'}")
-print(f"  {DATA_DIR / 'differential' / 'secretome_early.tsv'}")
-print(f"  {DATA_DIR / 'differential' / 'activities_late.tsv'}")
+for f in ["network/pkn_model1.tsv", "network/pkn_model2.tsv",
+          "network/pkn_model3.tsv", "differential/activities_early.tsv",
+          "differential/secretome_early.tsv", "differential/activities_late.tsv"]:
+    print(f"  {DATA_DIR / f}")
 
 # %% Summary
 #
-# We now have four inputs for CORNETO:
+# We now have per-model PKNs and input data for CORNETO:
 #
-# 1. pkn.tsv: The pruned prior knowledge network (source, mor, target)
-# 2. activities_early.tsv: Early enzyme activities (perturbations for model 2)
-# 3. secretome_early.tsv: Early secretome fold changes (measurements for
-#    model 2, perturbations for model 3)
-# 4. activities_late.tsv: Late enzyme activities (measurements for model 3)
+# Model 1 (TGFB1 → activities): pkn_model1.tsv
+#   Input: TGFB1 = +1
+#   Output: activities_early (TF/kinase activity scores)
 #
-# In addition, TGFB1 = +1 is included as a known stimulus in both models.
+# Model 2 (activities → secretome): pkn_model2.tsv
+#   Input: TGFB1 + activities_early
+#   Output: secretome_early (fold changes)
 #
-# Model 2 (early): activities_early + TGFB1 → secretome_early
-# Model 3 (early→late): secretome_early + TGFB1 → activities_late
+# Model 3 (secretome → late activities): pkn_model3.tsv
+#   Input: TGFB1 + secretome_early
+#   Output: activities_late
 #
 # The next step (script 03) will use these to run CARNIVAL network inference.

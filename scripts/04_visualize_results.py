@@ -4,9 +4,9 @@ Network visualization and interpretation.
 This script visualizes the CORNETO network inference results and
 compares them with the published network from Tüchler et al. (2025).
 
-It rebuilds a CORNETO Graph from the exported TSV files (network_edges.tsv,
-network_nodes.tsv) and uses CORNETO's built-in signaling preset for plotting.
-This decouples visualization from the optimization run in script 03.
+It rebuilds CORNETO Graph objects from the exported TSV files and uses
+CORNETO's signaling preset for plotting, ensuring consistency with
+the plots from script 03.
 """
 
 import pandas as pd
@@ -18,6 +18,7 @@ from pathlib import Path
 import corneto as cn
 from corneto.graph import Graph
 
+from carnival_utils import load_results, plot_network
 
 # %% Setting up paths for data and results
 # this is not important, it's we only needed to allow us to run the same code
@@ -31,55 +32,12 @@ except NameError:
 DATA_DIR = _script_root / "data" if (_script_root / "data").is_dir() else Path("data")
 RESULTS_DIR = _script_root / "results" if (_script_root / "data").is_dir() else Path("results")
 
-# %% 1. Load results
+# %% 1. Load and plot our merged network
 
-edges = pd.read_csv(RESULTS_DIR / "network_edges.tsv", sep="\t")
-nodes = pd.read_csv(RESULTS_DIR / "network_nodes.tsv", sep="\t")
+edges, nodes = load_results("network", RESULTS_DIR)
+print(f"Our network: {len(edges)} edges, {len(nodes)} nodes")
 
-print(f"Network: {len(edges)} edges, {len(nodes)} nodes")
-
-# %% 2. Rebuild CORNETO Graph and Data from exported results
-#
-# We reconstruct the Graph from the edge table and the Data object from
-# the node table, so we can use CORNETO's signaling preset for plotting.
-
-edge_tuples = list(zip(edges["source"], edges["sign"], edges["target"]))
-G = Graph.from_tuples(edge_tuples)
-
-# Rebuild the Data object from node roles and values
-sample_data = {}
-for _, row in nodes.iterrows():
-    if row["type"] in ("input", "output"):
-        sample_data[row["node"]] = {
-            "value": float(row["value"]),
-            "mapping": "vertex",
-            "role": row["type"],
-        }
-data = cn.Data.from_cdict({"early": sample_data})
-
-# Map solution values to the Graph's vertex/edge order
-vertex_value_map = dict(zip(nodes["node"], nodes["value"]))
-vertex_values = [vertex_value_map.get(name, 0.0) for name in G.V]
-edge_values = list(edges["edge_value"])
-
-# %% 3. Network visualization with CORNETO
-#
-# The signaling preset colors nodes and edges by their solution values
-# (red = positive/activated, blue = negative/inhibited), and uses the
-# PKN sign for arrow style (normal = activation, tee = inhibition).
-# feature_data annotates nodes by role (input/output).
-
-g = G.plot(
-    preset="signaling",
-    feature_data=data,
-    solution={
-        "v": vertex_values,
-        "e": edge_values,
-    },
-    solution_map={"vertex": "v", "edge": "e"},
-)
-
-# Render to file
+g = plot_network(edges, nodes)
 g.render(RESULTS_DIR / "network", format="pdf", cleanup=True)
 g.render(RESULTS_DIR / "network", format="png", cleanup=True)
 print(f"Saved network visualization to {RESULTS_DIR / 'network.pdf'}")
@@ -87,24 +45,65 @@ print(f"Saved network visualization to {RESULTS_DIR / 'network.pdf'}")
 # Display (if in interactive environment)
 g
 
-# %% 4. Compare with published network
+# %% 2. Load and plot the published network
 #
-# Load the published network edges from the paper's supplementary data.
-# Note: the paper's "early" network is the union of phases 1 (initial:
-# TGFB1 → activities) and 2 (early: activities → secretome). Our tutorial
-# runs only phase 2, so the comparison is approximate.
+# The paper's "early" network is the union of models 1 (TGFB1 → activities)
+# and 2 (activities → secretome). We parse the paper's data format and
+# plot it with the same signaling preset for visual comparison.
 
 paper_edges = pd.read_csv(DATA_DIR / "network" / "paper_edges.tsv", sep="\t")
 paper_nodes = pd.read_csv(DATA_DIR / "network" / "paper_nodes.tsv", sep="\t")
 
-# Filter for the early network
-paper_early = paper_edges[paper_edges["network"] == "early"]
-paper_early_nodes = paper_nodes[paper_nodes["network"] == "early"]
+paper_early = paper_edges[paper_edges["network"] == "early"].copy()
+paper_early_nodes = paper_nodes[paper_nodes["network"] == "early"].copy()
 
 print(f"\nPublished early network: {len(paper_early)} edges, "
       f"{len(paper_early_nodes)} nodes")
 
-# Parse published edges: the 'sign' column contains e.g. "(1)" or "(-1)"
+# Parse sign column: "(1)" → 1, "(-1)" → -1
+paper_early["sign_int"] = paper_early["sign"].str.strip("()").astype(int)
+
+# Build CORNETO Graph from paper data
+paper_edge_tuples = list(zip(
+    paper_early["source"], paper_early["sign_int"], paper_early["target"],
+))
+G_paper = Graph.from_tuples(paper_edge_tuples)
+
+# Map paper node types to input/output roles
+PAPER_ROLE_MAP = {
+    "TF": "input",
+    "Kinase/ phosphatase": "input",
+    "Secreted proteins": "output",
+}
+
+paper_sample_data = {}
+for _, row in paper_early_nodes.iterrows():
+    role = PAPER_ROLE_MAP.get(row["type"])
+    if role:
+        paper_sample_data[row["node"]] = {
+            "value": float(row["value"]),
+            "mapping": "vertex",
+            "role": role,
+        }
+paper_data = cn.Data.from_cdict({"early": paper_sample_data})
+
+paper_vertex_map = dict(zip(paper_early_nodes["node"], paper_early_nodes["value"]))
+paper_vertex_values = [float(paper_vertex_map.get(name, 0.0)) for name in G_paper.V]
+paper_edge_values = list(paper_early["sign_int"])
+
+g_paper = G_paper.plot(
+    preset="signaling",
+    feature_data=paper_data,
+    solution={"v": paper_vertex_values, "e": paper_edge_values},
+    solution_map={"vertex": "v", "edge": "e"},
+)
+
+g_paper.render(RESULTS_DIR / "network_paper_early", format="pdf", cleanup=True)
+g_paper.render(RESULTS_DIR / "network_paper_early", format="png", cleanup=True)
+print(f"Saved paper network plot to {RESULTS_DIR / 'network_paper_early.pdf'}")
+
+# %% 3. Compare with published network
+
 paper_early_pairs = set(zip(paper_early["source"], paper_early["target"]))
 our_pairs = set(zip(edges["source"], edges["target"]))
 
@@ -131,54 +130,7 @@ print(f"  Shared nodes: {len(node_overlap)}")
 print(f"  Only in published: {len(paper_early_node_set - our_node_set)}")
 print(f"  Only in ours: {len(our_node_set - paper_early_node_set)}")
 
-# %% 5. Plot the published network with CORNETO
-#
-# We use the same signaling preset as for our network, so the two plots
-# are directly comparable. The paper's sign column is "(1)" or "(-1)",
-# which we parse to integer. Node types are mapped to input/output roles:
-# TF and Kinase/phosphatase → input, Secreted proteins → output, PKN → intermediate.
-
-paper_early_sign = paper_early["sign"].str.strip("()").astype(int)
-paper_edge_tuples = list(zip(paper_early["source"], paper_early_sign, paper_early["target"]))
-G_paper = Graph.from_tuples(paper_edge_tuples)
-
-# Map paper node types to CORNETO roles
-PAPER_ROLE_MAP = {
-    "TF": "input",
-    "Kinase/ phosphatase": "input",
-    "Secreted proteins": "output",
-}
-
-paper_sample_data = {}
-for _, row in paper_early_nodes.iterrows():
-    role = PAPER_ROLE_MAP.get(row["type"])
-    if role:
-        paper_sample_data[row["node"]] = {
-            "value": float(row["value"]),
-            "mapping": "vertex",
-            "role": role,
-        }
-paper_data = cn.Data.from_cdict({"early": paper_sample_data})
-
-paper_vertex_map = dict(zip(paper_early_nodes["node"], paper_early_nodes["value"]))
-paper_vertex_values = [float(paper_vertex_map.get(name, 0.0)) for name in G_paper.V]
-paper_edge_values = list(paper_early_sign)
-
-g_paper = G_paper.plot(
-    preset="signaling",
-    feature_data=paper_data,
-    solution={
-        "v": paper_vertex_values,
-        "e": paper_edge_values,
-    },
-    solution_map={"vertex": "v", "edge": "e"},
-)
-
-g_paper.render(RESULTS_DIR / "network_paper_early", format="pdf", cleanup=True)
-g_paper.render(RESULTS_DIR / "network_paper_early", format="png", cleanup=True)
-print(f"\nSaved paper network plot to {RESULTS_DIR / 'network_paper_early.pdf'}")
-
-# %% 6. Node degree distribution
+# %% 4. Node degree distribution
 
 if len(edges) > 0:
     degree = pd.concat([
@@ -202,7 +154,7 @@ if len(edges) > 0:
     plt.savefig(RESULTS_DIR / "degree_distribution.png", dpi=150, bbox_inches="tight")
     plt.show()
 
-# %% 6. Optional: overlay with collagen imaging data
+# %% 5. Optional: overlay with collagen imaging data
 #
 # The collagen I imaging data shows the phenotypic outcome (ECM deposition)
 # over time. We can check whether key network nodes are associated with
